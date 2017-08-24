@@ -1,6 +1,6 @@
 //
 //  GalleryResponse.swift
-//  Hackin the Web
+//  Planetary
 //
 //  Created by Matthew Turk on 8/3/17.
 //  Copyright © 2017 MonitorMOJO, Inc. All rights reserved.

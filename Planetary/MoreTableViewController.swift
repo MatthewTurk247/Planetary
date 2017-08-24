@@ -9,6 +9,7 @@
 import UIKit
 import WebKit
 import SafariServices
+import Firebase
 
 class MoreTableViewController: UITableViewController {
 
@@ -22,19 +23,24 @@ class MoreTableViewController: UITableViewController {
     func handleShopTap(_ sender: UITapGestureRecognizer) {
         let safariViewController = SFSafariViewController(url: URL(string: "https://www.chopshopstore.com/collections/planetarysociety")!, entersReaderIfAvailable: false)
         present(safariViewController, animated: true)
+        Analytics.logEvent(AnalyticsEventSelectContent, parameters: [AnalyticsParameterContentType: "planetary_store" as NSObject, AnalyticsParameterContent: "https://www.chopshopstore.com/collections/planetarysociety" as NSObject])
     }
     func handleDonateTap(_ sender: UITapGestureRecognizer) {
         let safariViewController = SFSafariViewController(url: URL(string: "https://secure.planetary.org/site/SPageNavigator/supportprojects.html")!, entersReaderIfAvailable: false)
         present(safariViewController, animated: true)
+        Analytics.logEvent(AnalyticsEventSelectContent, parameters: [AnalyticsParameterContentType: "planetary_site" as NSObject, AnalyticsParameterContent: "https://secure.planetary.org/site/SPageNavigator/supportprojects.html" as NSObject])
     }
     func handleVideoTap(_ sender: UITapGestureRecognizer) {
         let safariViewController = SFSafariViewController(url: URL(string: "http://www.planetary.org/multimedia/planetary-tv/")!, entersReaderIfAvailable: false)
         present(safariViewController, animated: true)
+        Analytics.logEvent(AnalyticsEventSelectContent, parameters: [AnalyticsParameterContentType: "planetary_site" as NSObject, AnalyticsParameterContent: "http://www.planetary.org/multimedia/planetary-tv/" as NSObject])
     }
     func handleAudioTap(_ sender: UITapGestureRecognizer) {
         let safariViewController = SFSafariViewController(url: URL(string: "http://www.planetary.org/multimedia/planetary-radio/")!, entersReaderIfAvailable: false)
         present(safariViewController, animated: true)
+        Analytics.logEvent(AnalyticsEventSelectContent, parameters: [AnalyticsParameterContentType: "planetary_site" as NSObject, AnalyticsParameterContent: "http://www.planetary.org/multimedia/planetary-radio/" as NSObject])
     }
+    
     func handleLoginTap(_ sender: UITapGestureRecognizer) {
         
         let alertController = UIAlertController(title: "Login", message: "To register, please visit:\n\"planetary.org/register\"", preferredStyle: .alert)
@@ -58,7 +64,7 @@ class MoreTableViewController: UITableViewController {
                     print("hello")
                     print(innerHTML!)
                 })
-                
+                Analytics.logEvent(AnalyticsEventLogin, parameters: nil)
                 
             } else {
                 print("please enter info")

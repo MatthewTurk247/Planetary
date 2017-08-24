@@ -59,8 +59,8 @@ class EventsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         rq.testDevices = [kGADSimulatorID, "b0564293d014496576bd95f02237d4dd"]
         EWNativeAdView.load(rq)
         
-        self.eventsTableView.sectionHeaderHeight = 150
-        self.eventsTableView.tableHeaderView = EWNativeAdView
+        EWNativeAdView.isHidden = true
+        self.eventsTableView.tableHeaderView?.isHidden = true
         
         refreshControl.addTarget(self, action: #selector(ViewController.refreshData), for: .valueChanged)
         
@@ -80,7 +80,7 @@ class EventsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             let myHTMLString = try String(contentsOf: myURL, encoding: .utf8)
             PSEventsPosts = try! EventsResponse(myHTMLString).posts
             
-            //Create a pageCount and if the user scrolls to the bottom +1 it and then scrape and add depending on the pageCount. Make sure to note if the user has already scrolled to the bottom before (like if the user kept scrolling up and down, don't keep scraping...)
+            
         } catch let error {
             print("Error parsing blogs: \(error)")
         }
@@ -110,7 +110,7 @@ class EventsViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 }
             }
             
-            //Create a pageCount and if the user scrolls to the bottom +1 it and then scrape and add depending on the pageCount. Make sure to note if the user has already scrolled to the bottom before (like if the user kept scrolling up and down, don't keep scraping...)
+            
         } catch let error {
             print("Error parsing blogs: \(error)")
         }
@@ -193,6 +193,13 @@ class EventsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         self.eventsTableView.sectionHeaderHeight = 0
     }
+    
+    func nativeExpressAdViewDidReceiveAd(_ nativeExpressAdView: GADNativeExpressAdView) {
+        self.eventsTableView.sectionHeaderHeight = 150
+        nativeExpressAdView.isHidden = false
+        self.eventsTableView.tableHeaderView?.isHidden = false
+        self.eventsTableView.tableHeaderView = nativeExpressAdView
+    }
 
     // MARK: - Navigation
     
@@ -205,6 +212,11 @@ class EventsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             destination?.eventUrl = PSEventsPosts[classIndex!].url
             destination?.eventDescription = PSEventsPosts[classIndex!].desc
             self.eventsTableView.deselectRow(at: self.eventsTableView.indexPathForSelectedRow!, animated: true)
+            Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
+                AnalyticsParameterSource: PSEventsPosts[classIndex!].url as NSObject,
+                AnalyticsParameterItemName: PSEventsPosts[classIndex!].title as NSObject,
+                AnalyticsParameterContentType: "event" as NSObject
+                ])
         }
     }
 

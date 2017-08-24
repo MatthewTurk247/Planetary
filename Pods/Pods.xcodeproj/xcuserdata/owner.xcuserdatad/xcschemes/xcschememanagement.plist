@@ -24,6 +24,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>ROGoogleTranslate.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>SwiftSoup.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -47,22 +52,27 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>40E10345641469F0F7C564C69D1A3A2A</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>96CF93A32378BF5A489D93407E1EDA55</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>9FE25C4CC4D99DCC1A6EA41484F0E66F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>DC62F90714FE763BA6B5238A621F50BB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>E4DD95323C54A78F879DAB0F1508B8E7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E739BD463B4DDDBD5F01520A35309170</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FB6AAD3CF084BA47258AC9E5783547D6</key>
 		<dict>
 			<key>primary</key>
 			<true/>

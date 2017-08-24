@@ -1,8 +1,8 @@
 //
 //  ViewController.swift
-//  Hackin the Web
+//  Planetary
 //
-//  Created by Kyle Lee on 6/18/17.
+//  Created by Matthew Turk on 6/18/17.
 //  Copyright © 2017 MonitorMOJO, Inc. All rights reserved.
 //
 
@@ -18,14 +18,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     let webView = WKWebView()
     let refreshControl = UIRefreshControl()
     let cellReuseIdentifier = "cell"
-    var pageCount = 0
+    var pageCount = 1
     @IBOutlet var PSHomeTableView: UITableView!
     var PSPosts = [PlanetaryPost]()
     let blogSegueIdentifier = "PSShowBlogSegue"
     private let VCAdUnitId = "ca-app-pub-2723394137854237/2325403689"
     let myURLString = "http://www.planetary.org/blogs/"
     let preferredLanguage = Locale.preferredLanguages[0]
-    
+    var footerSpinner = UIActivityIndicatorView()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -58,9 +59,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let rq = GADRequest()
         rq.testDevices = [kGADSimulatorID, "b0564293d014496576bd95f02237d4dd"]
         VCNativeAdView.load(rq)
-        
-        self.PSHomeTableView.sectionHeaderHeight = 150
-        self.PSHomeTableView.tableHeaderView = VCNativeAdView
+        VCNativeAdView.isHidden = true
+        self.PSHomeTableView.tableHeaderView?.isHidden = true
         
         refreshControl.addTarget(self, action: #selector(ViewController.refreshData), for: .valueChanged)
         
@@ -79,18 +79,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             
             let myHTMLString = try String(contentsOf: myURL, encoding: .utf8)
             PSPosts = try! PlanetaryResponse(myHTMLString).posts
-            
-            //The actual planetary site is down and this will crash
-            for p in 2...4 {
-                guard let additionalURL = URL(string: myURLString + "index.jsp?page=\(p)") else {
-                    print("error")
-                    return
-                }
-                let myAdditionalHTMLString = try String(contentsOf: additionalURL, encoding: .utf8)
-                PSPosts += try PlanetaryResponse(myAdditionalHTMLString).posts
-            }
-            
-            //Create a pageCount and if the user scrolls to the bottom +1 it and then scrape and add depending on the pageCount. Make sure to note if the user has already scrolled to the bottom before (like if the user kept scrolling up and down, don't keep scraping...)
+
         } catch let error {
             print("Error parsing blogs: \(error)")
         }
@@ -100,8 +89,34 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         self.PSHomeTableView.reloadData()
     }
     
-    func nativeExpressAdViewWillPresentScreen(_ nativeExpressAdView: GADNativeExpressAdView) {
-        print("will present screen")
+    func loadAdditionalPage(page: Int) {
+        
+        //Initiate spinner
+        //self.PSHomeTableView.tableFooterView = footerSpinner
+        //self.PSHomeTableView.sectionFooterHeight = 50
+        //footerSpinner.startAnimating()
+        
+        guard let additionalURL = URL(string: myURLString + "index.jsp?page=\(page)") else {
+            print("error")
+            return
+        }
+        
+        do {
+            
+            let myAdditionalHTMLString = try String(contentsOf: additionalURL, encoding: .utf8)
+            PSPosts += try PlanetaryResponse(myAdditionalHTMLString).posts
+            self.PSHomeTableView.reloadData()
+            
+        } catch let error {
+            print(error)
+            //reached last page? (unlikely)
+        }
+        
+        //Remove spinner
+        //self.footerSpinner.stopAnimating()
+        //self.PSHomeTableView.sectionFooterHeight = 0
+        //self.PSHomeTableView.tableFooterView = nil
+        
     }
     
     func refreshData() {
@@ -133,7 +148,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                     }
                 }
                 
-                //Create a pageCount and if the user scrolls to the bottom +1 it and then scrape and add depending on the pageCount. Make sure to note if the user has already scrolled to the bottom before (like if the user kept scrolling up and down, don't keep scraping...)
+                
             } catch let error {
                 print("Error parsing blogs: \(error)")
             }
@@ -197,11 +212,18 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         // create a new cell if needed or reuse an old one
         let cell = self.PSHomeTableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! PSTableViewCell!
+        
         // set the text from the data model
         cell?.PSTitleLabel.text = self.PSPosts[indexPath.row].title
         cell?.PSDescriptionLabel.text = self.PSPosts[indexPath.row].desc
         cell?.PSAuthorLabel.text = self.PSPosts[indexPath.row].author.uppercased()
         cell?.PSImageView.loadUsingCache(PSPosts[indexPath.row].imgUrl)
+        
+        //check to see if the user has reached the bottom
+        if indexPath.row == self.PSPosts.count - 1 {
+            pageCount += 1
+            loadAdditionalPage(page: pageCount)
+        }
         
         return cell!
     }
@@ -221,13 +243,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             destination?.blogTitle = PSPosts[blogIndex!].title
             self.PSHomeTableView.deselectRow(at: self.PSHomeTableView.indexPathForSelectedRow!, animated: true)
             Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
-                AnalyticsParameterSource: PSPosts[blogIndex!].url as NSObject,
+                AnalyticsParameterContent: PSPosts[blogIndex!].url as NSObject,
                 AnalyticsParameterItemName: PSPosts[blogIndex!].title as NSObject,
-                AnalyticsParameterContentType: "cont" as NSObject
+                AnalyticsParameterContentType: "blog_post" as NSObject,
                 ])
-        } else {
-            print("wrong segue id")
-            //print("notify user that he/she cannot view this because you don't have internet")
         }
     }
     
@@ -240,20 +259,23 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func nativeExpressAdView(_ nativeExpressAdView: GADNativeExpressAdView, didFailToReceiveAdWithError error: GADRequestError) {
-        //remove ad and parent view or hide or something
+        //make the ad stuff go away
         print(error)
-        //VCNativeAdView.frame = CGRect(x: 0, y:0, width: UIScreen.main.bounds.width, height: 0)
-        //VCNativeAdView.adSize = GADAdSizeFromCGSize(CGSize(width: UIScreen.main.bounds.width, height: 0))
         self.VCNativeAdView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 0)
         self.PSHomeTableView.tableHeaderView = nil
         
         self.PSHomeTableView.sectionHeaderHeight = 0
-
+        
     }
     
     func nativeExpressAdViewDidReceiveAd(_ nativeExpressAdView: GADNativeExpressAdView) {
         print("receive it")
         print(nativeExpressAdView.adUnitID!)
+        self.PSHomeTableView.sectionHeaderHeight = 150
+        nativeExpressAdView.isHidden = false
+        self.PSHomeTableView.tableHeaderView?.isHidden = false
+        self.PSHomeTableView.tableHeaderView = nativeExpressAdView
+        
     }
     
 }

@@ -1,6 +1,6 @@
 //
 //  PSEventViewController.swift
-//  Hackin the Web
+//  Planetary
 //
 //  Created by Matthew Turk on 8/5/17.
 //  Copyright © 2017 MonitorMOJO, Inc. All rights reserved.
@@ -9,6 +9,7 @@
 import UIKit
 import SwiftSoup
 import SafariServices
+import Firebase
 
 class PSEventViewController: UIViewController {
     
@@ -24,6 +25,7 @@ class PSEventViewController: UIViewController {
         print("Going to \(visitEventUrl)")
         let safariViewController = SFSafariViewController(url: URL(string: visitEventUrl)!, entersReaderIfAvailable: false)
         present(safariViewController, animated: true)
+        Analytics.logEvent(AnalyticsEventSelectContent, parameters: [AnalyticsParameterContent: visitEventUrl as NSObject, AnalyticsParameterContentType: "external_site" as NSObject])
     }
     @IBOutlet var visitEventBarButtonItem: UIBarButtonItem!
     let preferredLanguage = Locale.preferredLanguages[0]
@@ -31,7 +33,7 @@ class PSEventViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         self.title = "Event"
         //Second level

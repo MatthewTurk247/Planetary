@@ -1,6 +1,6 @@
 //
 //  PSClassViewController.swift
-//  Hackin the Web
+//  Planetary
 //
 //  Created by Matthew Turk on 7/26/17.
 //  Copyright © 2017 MonitorMOJO, Inc. All rights reserved.
@@ -21,7 +21,7 @@ class PSClassViewController: UIViewController, UIWebViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Class " + String(classNumber + 1)
-        var vidId = print(vidUrl.characters.split(separator: "/").map(String.init)[3].replacingOccurrences(of: "?rel=", with: ""))
+        let vidId = print(vidUrl.characters.split(separator: "/").map(String.init)[3].replacingOccurrences(of: "?rel=", with: ""))
         vidWebView.scrollView.contentInset = .zero
         vidWebView.scrollView.isScrollEnabled = false
         vidWebView.scrollView.bounces = false

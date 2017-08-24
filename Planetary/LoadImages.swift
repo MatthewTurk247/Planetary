@@ -1,6 +1,6 @@
 //
 //  LoadImages.swift
-//  Hackin the Web
+//  Planetary
 //
 //  Created by Matthew Turk on 8/20/17.
 //  Copyright © 2017 MonitorMOJO, Inc. All rights reserved.
@@ -18,7 +18,7 @@ extension UIImageView {
         self.image = nil
         
         //check cache for image
-        if let cachedImage = imageCache.object(forKey: theUrl as AnyObject) as? UIImage{
+        if let cachedImage = imageCache.object(forKey: theUrl as AnyObject) as? UIImage {
             self.image = cachedImage
             return
         }

@@ -39,6 +39,7 @@
 		EB06577F1F4D1C0100AB152D /* PSSafariViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0657751F4D1C0100AB152D /* PSSafariViewController.swift */; };
 		EB0657831F4D1C4200AB152D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EB0657811F4D1C4200AB152D /* Assets.xcassets */; };
 		EB0657841F4D1C4200AB152D /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB0657821F4D1C4200AB152D /* Info.plist */; };
+		EB6AC1BD1F4D376800788A02 /* TranslateLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6AC1BC1F4D376800788A02 /* TranslateLabel.swift */; };
 		EB9E909A1F4D1E4E00E6F62F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB9E90991F4D1E4E00E6F62F /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
@@ -101,6 +102,7 @@
 		EB0657751F4D1C0100AB152D /* PSSafariViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSSafariViewController.swift; sourceTree = "<group>"; };
 		EB0657811F4D1C4200AB152D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EB0657821F4D1C4200AB152D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EB6AC1BC1F4D376800788A02 /* TranslateLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TranslateLabel.swift; sourceTree = "<group>"; };
 		EB9E90991F4D1E4E00E6F62F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		ED0D8E1239A00F73380D7012 /* Pods-PlanetaryUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlanetaryUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PlanetaryUITests/Pods-PlanetaryUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		F2D3C2C679A41B182A8F4150 /* Pods-PlanetaryTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlanetaryTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PlanetaryTests/Pods-PlanetaryTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -235,6 +237,7 @@
 				EB0657611F4D1BCF00AB152D /* PSClassTableViewCell.swift */,
 				EB0657621F4D1BCF00AB152D /* GalleryCollectionViewCell.swift */,
 				EB0657631F4D1BCF00AB152D /* LoadImages.swift */,
+				EB6AC1BC1F4D376800788A02 /* TranslateLabel.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -246,9 +249,9 @@
 				EB06576D1F4D1C0100AB152D /* EventsViewController.swift */,
 				EB06576E1F4D1C0100AB152D /* ClassesTableViewController.swift */,
 				EB06576F1F4D1C0100AB152D /* GalleryCollectionViewController.swift */,
+				EB0657721F4D1C0100AB152D /* MoreTableViewController.swift */,
 				EB0657701F4D1C0100AB152D /* PSEventViewController.swift */,
 				EB0657711F4D1C0100AB152D /* PSImageViewController.swift */,
-				EB0657721F4D1C0100AB152D /* MoreTableViewController.swift */,
 				EB0657731F4D1C0100AB152D /* PSClassViewController.swift */,
 				EB0657741F4D1C0100AB152D /* PSBlogViewController.swift */,
 				EB0657751F4D1C0100AB152D /* PSSafariViewController.swift */,
@@ -474,12 +477,14 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Planetary/Pods-Planetary-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/ROGoogleTranslate/ROGoogleTranslate.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftSoup/SwiftSoup.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ROGoogleTranslate.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftSoup.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
@@ -562,6 +567,7 @@
 				EB06577F1F4D1C0100AB152D /* PSSafariViewController.swift in Sources */,
 				EB0657781F4D1C0100AB152D /* ClassesTableViewController.swift in Sources */,
 				EB06577B1F4D1C0100AB152D /* PSImageViewController.swift in Sources */,
+				EB6AC1BD1F4D376800788A02 /* TranslateLabel.swift in Sources */,
 				EB0657671F4D1BCF00AB152D /* PSTableViewCell.swift in Sources */,
 				EB0657691F4D1BCF00AB152D /* GalleryCollectionViewCell.swift in Sources */,
 				EB06577E1F4D1C0100AB152D /* PSBlogViewController.swift in Sources */,

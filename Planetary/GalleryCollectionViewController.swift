@@ -1,12 +1,13 @@
 //
 //  GalleryCollectionViewController.swift
-//  Hackin the Web
+//  Planetary
 //
 //  Created by Matthew Turk on 8/3/17.
 //  Copyright © 2017 MonitorMOJO, Inc. All rights reserved.
 //
 
 import UIKit
+import Firebase
 
 private let reuseIdentifier = "galleryCell"
 private let segueIdentifier = "gallerySegue"
@@ -93,6 +94,11 @@ class GalleryCollectionViewController: UICollectionViewController {
             let destination = segue.destination as? PSImageViewController
             let galleryIndex = self.collectionView?.indexPath(for: sender as! UICollectionViewCell)?.row
             destination?.PSImageViewControllerUrl = PSGalleryPosts[galleryIndex!].imgUrl
+            Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
+                AnalyticsParameterSource: PSGalleryPosts[galleryIndex!].url as NSObject,
+                AnalyticsParameterItemName: PSGalleryPosts[galleryIndex!].title as NSObject,
+                AnalyticsParameterContentType: "image" as NSObject
+                ])
         }
     }
 

@@ -1,6 +1,6 @@
 //
 //  EventsResponse.swift
-//  Hackin the Web
+//  Planetary
 //
 //  Created by Matthew Turk on 7/28/17.
 //  Copyright © 2017 MonitorMOJO, Inc. All rights reserved.
@@ -25,7 +25,6 @@ struct EventsResponse {
             var post = PlanetaryPost(title: try! containers[i].select("h5").text(), desc: try! containers[i].select("p").text(), author: "", url: try! containers[i].select("h5").select("a").attr("href"), imgUrl: try! containers[i].select("div.two.columns").select("a").select("img").attr("src"))
             let date = Date()
             let formatter = DateFormatter()
-            //formatter.dateFormat = "MMMM d, yyyy"
             formatter.dateFormat = "MMMM d yyyy"
             let result = formatter.string(from: date)
             //print(result)

@@ -28,7 +28,9 @@
 		<true/>
 	</dict>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Need photos</string>
+	<string>&quot;Planetary&quot; needs access to save photos.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>&quot;Planetary&quot; may need access to your camera.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

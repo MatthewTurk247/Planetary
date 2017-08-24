@@ -1,8 +1,8 @@
 //
-//  GmailResponse.swift
-//  Hackin the Web
+//  PlanetaryResponse.swift
+//  Planetary
 //
-//  Created by Kyle Lee on 6/18/17.
+//  Created by Matthew Turk on 6/18/17.
 //  Copyright © 2017 MonitorMOJO, Inc. All rights reserved.
 //
 

@@ -9,6 +9,7 @@ target 'Planetary' do
   pod 'SwiftSoup'
   pod 'Firebase/Core'
   pod 'Firebase/AdMob'
+  pod 'ROGoogleTranslate'
 
   target 'PlanetaryTests' do
     inherit! :search_paths

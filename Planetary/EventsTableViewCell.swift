@@ -1,6 +1,6 @@
 //
 //  EventsTableViewCell.swift
-//  Hackin the Web
+//  Planetary
 //
 //  Created by Matthew Turk on 8/4/17.
 //  Copyright © 2017 MonitorMOJO, Inc. All rights reserved.

@@ -1,8 +1,8 @@
 //
 //  AppDelegate.swift
-//  Hackin the Web
+//  Planetary
 //
-//  Created by Kyle Lee on 6/18/17.
+//  Created by Matthew Turk on 6/18/17.
 //  Copyright © 2017 MonitorMOJO, Inc. All rights reserved.
 //
 
@@ -13,7 +13,7 @@ import Firebase
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -28,6 +28,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.shared.isStatusBarHidden = false
         UITabBar.appearance().tintColor = UIColor(red: 0, green: 170/255, blue: 240/255, alpha: 1)
         UIBarButtonItem.appearance().setTitleTextAttributes([NSFontAttributeName: UIFont(name: "AvenirNext-Medium", size: 17)!], for: .normal) // your textattributes here
+            Analytics.logEvent(AnalyticsEventAppOpen, parameters: nil)
+        
         return true
     }
 

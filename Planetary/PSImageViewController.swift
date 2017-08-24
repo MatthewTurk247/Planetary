@@ -1,6 +1,6 @@
 //
 //  PSImageViewController.swift
-//  Hackin the Web
+//  Planetary
 //
 //  Created by Matthew Turk on 8/5/17.
 //  Copyright © 2017 MonitorMOJO, Inc. All rights reserved.

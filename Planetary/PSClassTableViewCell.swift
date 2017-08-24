@@ -1,6 +1,6 @@
 //
 //  PSClassTableViewCell.swift
-//  Hackin the Web
+//  Planetary
 //
 //  Created by Matthew Turk on 7/26/17.
 //  Copyright © 2017 MonitorMOJO, Inc. All rights reserved.
