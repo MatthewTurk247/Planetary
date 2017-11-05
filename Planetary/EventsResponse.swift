@@ -22,7 +22,7 @@ struct EventsResponse {
         for i in 0...(containers.count - 4) {
             //This is where the magic happens.
             //First level
-            var post = PlanetaryPost(title: try! containers[i].select("h5").text(), desc: try! containers[i].select("p").text(), author: "", url: try! containers[i].select("h5").select("a").attr("href"), imgUrl: try! containers[i].select("div.two.columns").select("a").select("img").attr("src"))
+            var post = PlanetaryPost(title: try! containers[i].select("h1, h2, h3, h4, h5, h6").text(), desc: try! containers[i].select("p").text(), author: "", url: try! containers[i].select("h1, h2, h3, h4, h5, h6").select("a").attr("href"), imgUrl: try! containers[i].select("div.two.columns").select("a").select("img").attr("src"))
             let date = Date()
             let formatter = DateFormatter()
             formatter.dateFormat = "MMMM d yyyy"

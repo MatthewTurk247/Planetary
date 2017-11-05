@@ -43,7 +43,7 @@ class PSClassViewController: UIViewController, UIWebViewDelegate {
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        vidWebView.loadHTMLString("<iframe style=\"margin-left: -15px; margin-top: -15px\" width=\"\(vidWebView.frame.width + 15)\" height=\"\(vidWebView.frame.height + 15)\" src=\"\(vidUrl)\" frameborder=\"0\" allowfullscreen></iframe>", baseURL: nil)
+        vidWebView.loadHTMLString("<iframe style=\"margin-left: -15px; margin-top: -15px\" width=\"\(size.width + 15)\" height=\"\(vidWebView.frame.height + 15)\" src=\"\(vidUrl)\" frameborder=\"0\" allowfullscreen></iframe>", baseURL: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {

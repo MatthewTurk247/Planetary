@@ -26,8 +26,16 @@ class MoreTableViewController: UITableViewController {
         Analytics.logEvent(AnalyticsEventSelectContent, parameters: [AnalyticsParameterContentType: "planetary_store" as NSObject, AnalyticsParameterContent: "https://www.chopshopstore.com/collections/planetarysociety" as NSObject])
     }
     func handleDonateTap(_ sender: UITapGestureRecognizer) {
-        let safariViewController = SFSafariViewController(url: URL(string: "https://secure.planetary.org/site/SPageNavigator/supportprojects.html")!, entersReaderIfAvailable: false)
-        present(safariViewController, animated: true)
+        guard let donateURL = URL(string: "https://secure.planetary.org/site/SPageNavigator/supportprojects.html") else {
+            return //be safe
+        }
+        
+        if #available(iOS 10.0, *) {
+            UIApplication.shared.open(donateURL, options: [:], completionHandler: nil)
+        } else {
+            UIApplication.shared.openURL(donateURL)
+        }
+        
         Analytics.logEvent(AnalyticsEventSelectContent, parameters: [AnalyticsParameterContentType: "planetary_site" as NSObject, AnalyticsParameterContent: "https://secure.planetary.org/site/SPageNavigator/supportprojects.html" as NSObject])
     }
     func handleVideoTap(_ sender: UITapGestureRecognizer) {
@@ -107,6 +115,8 @@ class MoreTableViewController: UITableViewController {
             let calendar = Calendar.current
             let year = calendar.component(.year, from: date)
             self.copyrightLabel.text = "Planetary v" + version + "\n©\(year) MonitorMOJO, Inc. All rights reserved."
+        } else {
+            self.copyrightLabel.text = "© MonitorMOJO, Inc. All rights reserved."
         }
         //let loginTap = UITapGestureRecognizer(target: self, action: #selector(self.handleLoginTap(_:)))
         //loginContentView.addGestureRecognizer(loginTap)
@@ -116,10 +126,14 @@ class MoreTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+//        let mainTabBarController = self.tabBarController as? PSTabBarController
+//        mainTabBarController?.alertController.dismiss(animated: true, completion: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         UIApplication.shared.statusBarStyle = .lightContent
+        UIApplication.shared.isStatusBarHidden = false
+        Analytics.setScreenName("More", screenClass: "MoreTableViewController")
     }
 
     override func didReceiveMemoryWarning() {

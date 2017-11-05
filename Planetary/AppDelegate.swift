@@ -13,7 +13,6 @@ import Firebase
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -29,6 +28,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UITabBar.appearance().tintColor = UIColor(red: 0, green: 170/255, blue: 240/255, alpha: 1)
         UIBarButtonItem.appearance().setTitleTextAttributes([NSFontAttributeName: UIFont(name: "AvenirNext-Medium", size: 17)!], for: .normal) // your textattributes here
             Analytics.logEvent(AnalyticsEventAppOpen, parameters: nil)
+        
+        //you should hijack if it's first login...
+        /*window = UIWindow(frame: UIScreen.main.bounds)
+        window?.makeKeyAndVisible()
+        window?.rootViewController = PSTabBarController()*/
+        //If this is loaded for the first time, launch the slideshow
         
         return true
     }

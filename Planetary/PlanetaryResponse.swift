@@ -26,7 +26,7 @@ struct PlanetaryResponse {
         for i in 0...(containers.count - 5) {
             //This is where the magic happens.
             //First level
-            let title = try containers[i].select("div.eight.columns").select("h4").first()!.text()
+            let title = try containers[i].select("div.eight.columns").select("h1, h2, h3, h4, h5, h6").first()!.text()
             let desc = try containers[i].select("div.eight.columns").select("p.listDesc").first()!.text()
             let author = try containers[i].select("div.eight.columns").select("p.listDetails").select("a").first()!.text()
             let url = try containers[i].select("div.four.columns").select("a").attr("href")

@@ -35,6 +35,7 @@ class PSEventViewController: UIViewController {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
+        
         self.title = "Event"
         //Second level
         do {

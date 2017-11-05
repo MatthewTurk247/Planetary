@@ -10,6 +10,7 @@ import UIKit
 import WebKit
 import SwiftSoup
 import Firebase
+import ROGoogleTranslate
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, GADNativeExpressAdViewDelegate {
     
@@ -23,15 +24,17 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     var PSPosts = [PlanetaryPost]()
     let blogSegueIdentifier = "PSShowBlogSegue"
     private let VCAdUnitId = "ca-app-pub-2723394137854237/2325403689"
+    private let PSApiKey = "AIzaSyDJLXP9zaEi66E5ChKUN2XUfVwlnfL4ldE"
     let myURLString = "http://www.planetary.org/blogs/"
     let preferredLanguage = Locale.preferredLanguages[0]
     var footerSpinner = UIActivityIndicatorView()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         if VCReachability.isReachable {
-            self.loadData()
+            loadAd()
+            loadData()
         }
         
         VCReachability.whenUnreachable = { _ in
@@ -46,21 +49,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         } catch {
             print("failed to start notifier")
         }
+//        let mainTabBarController = self.tabBarController as? PSTabBarController
+//        mainTabBarController?.alertController.dismiss(animated: true, completion: nil)
     }
     
     func loadData() {
-        
-        VCNativeAdView.adUnitID = VCAdUnitId
-        self.VCNativeAdView.adSize = GADAdSizeFromCGSize(CGSize(width: UIScreen.main.bounds.width, height: 150))
-        self.VCNativeAdView.frame = CGRect(x: 0, y:0, width: UIScreen.main.bounds.width, height: 150)
-        
-        VCNativeAdView.rootViewController = self
-        VCNativeAdView.delegate = self
-        let rq = GADRequest()
-        rq.testDevices = [kGADSimulatorID, "b0564293d014496576bd95f02237d4dd"]
-        VCNativeAdView.load(rq)
-        VCNativeAdView.isHidden = true
-        self.PSHomeTableView.tableHeaderView?.isHidden = true
         
         refreshControl.addTarget(self, action: #selector(ViewController.refreshData), for: .valueChanged)
         
@@ -83,6 +76,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         } catch let error {
             print("Error parsing blogs: \(error)")
         }
+        
         self.PSHomeTableView.isScrollEnabled = true
         self.PSHomeTableView.separatorStyle = .singleLine
         self.PSHomeTableView.backgroundColor = UIColor.white
@@ -112,11 +106,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             //reached last page? (unlikely)
         }
         
-        //Remove spinner
-        //self.footerSpinner.stopAnimating()
-        //self.PSHomeTableView.sectionFooterHeight = 0
-        //self.PSHomeTableView.tableFooterView = nil
-        
     }
     
     func refreshData() {
@@ -139,8 +128,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 
                 let myHTMLString = try String(contentsOf: myURL, encoding: .utf8)
                 
-                //print(PSPosts.count)
-                
                 if !PSPosts.isEmpty {
                     if try! PSPosts[0].title != PlanetaryResponse(myHTMLString).posts[0].title {
                         //prepend to PSPosts
@@ -159,7 +146,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         UIView.animate(withDuration: 0.5) {
             self.PSHomeTableView.reloadData()
-            self.refreshControl.endRefreshing()
+            self.refreshControl.perform(#selector(self.refreshControl.endRefreshing), with: nil, afterDelay: 0.01)
         }
     }
     
@@ -167,10 +154,25 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let reachability = note.object as! Reachability
         if reachability.isReachable {
             print("established network connection")
+            self.loadAd()
             self.loadData()
         } else {
             print("lost network connection")
         }
+    }
+    
+    func loadAd() {
+        VCNativeAdView.adUnitID = VCAdUnitId
+        self.VCNativeAdView.adSize = GADAdSizeFromCGSize(CGSize(width: UIScreen.main.bounds.width, height: 150))
+        self.VCNativeAdView.frame = CGRect(x: 0, y:0, width: UIScreen.main.bounds.width, height: 150)
+        
+        VCNativeAdView.rootViewController = self
+        VCNativeAdView.delegate = self
+        let rq = GADRequest()
+        rq.testDevices = [kGADSimulatorID, "b0564293d014496576bd95f02237d4dd"]
+        VCNativeAdView.load(rq)
+        VCNativeAdView.isHidden = true
+        self.PSHomeTableView.tableHeaderView?.isHidden = true
     }
     
     func setBackgroundDefault(){
@@ -231,6 +233,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func viewDidAppear(_ animated: Bool) {
         UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .lightContent
+        Analytics.setScreenName("Blog", screenClass: "ViewController")
     }
     
     // MARK: - Navigation
@@ -270,12 +273,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func nativeExpressAdViewDidReceiveAd(_ nativeExpressAdView: GADNativeExpressAdView) {
         print("receive it")
-        print(nativeExpressAdView.adUnitID!)
-        self.PSHomeTableView.sectionHeaderHeight = 150
-        nativeExpressAdView.isHidden = false
-        self.PSHomeTableView.tableHeaderView?.isHidden = false
-        self.PSHomeTableView.tableHeaderView = nativeExpressAdView
+        perform(#selector(showDelayedAd), with: nil, afterDelay: 0.01)
         
+    }
+    
+    func showDelayedAd() {
+        self.PSHomeTableView.sectionHeaderHeight = 150
+        VCNativeAdView.isHidden = false
+        self.PSHomeTableView.tableHeaderView?.isHidden = false
+        self.PSHomeTableView.tableHeaderView = VCNativeAdView
     }
     
 }

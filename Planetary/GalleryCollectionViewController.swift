@@ -17,16 +17,21 @@ var screenWidth: CGFloat!
 var screenHeight: CGFloat!
 let rc = Reachability()!
 let preferredLanguage = Locale.preferredLanguages[0]
+let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+var didLoadData = false
+
 
 class GalleryCollectionViewController: UICollectionViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        if rc.isReachable {
-            self.loadData()
-        }
-        
+        //perform(#selector(asdf), with: nil, afterDelay: 0.01)
+        customActivityIndicatory(self.view, startAnimate: true)
+
+        //self.collectionView?.backgroundView = activityIndicatorView
+        self.title = "Gallery"
+
         rc.whenUnreachable = { _ in
             self.setBackgroundDefault()
         }
@@ -37,15 +42,42 @@ class GalleryCollectionViewController: UICollectionViewController {
         } catch {
             print("failed to start notifier")
         }
-        
     }
-
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        Analytics.setScreenName("Gallery", screenClass: "GalleryCollectionViewController")
+        UIApplication.shared.statusBarStyle = .lightContent
+        
+        if rc.isReachable {
+            if !didLoadData {
+                self.loadData()
+            }
+        }
+        
+        if self.collectionView?.visibleCells.count != 0 {
+            self.title = "Gallery"
+            self.customActivityIndicatory(self.view, startAnimate: false)
+        } else {
+            self.loadData()
+            self.collectionView?.reloadData()
+            self.customActivityIndicatory(self.view, startAnimate: false)
+        }
+        
+        self.customActivityIndicatory(self.view, startAnimate: false)
+        //activityIndicatorView.startAnimating()
+         // a bit of trpouble with hiding this...
+    }
+    
     func loadData() {
+        
         screenSize = UIScreen.main.bounds
         screenWidth = screenSize.width
         screenHeight = screenSize.height
         
-        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         layout.itemSize = CGSize(width: screenWidth/2 - 0.5, height: screenWidth/2)
         layout.minimumInteritemSpacing = 0
@@ -67,6 +99,7 @@ class GalleryCollectionViewController: UICollectionViewController {
         }
         collectionView?.isScrollEnabled = true
         collectionView?.reloadData()
+        didLoadData = true
     }
     
     func internetChanged(note: NSNotification) {
@@ -74,16 +107,57 @@ class GalleryCollectionViewController: UICollectionViewController {
         if reachability.isReachable {
             print("established network connection")
             self.loadData()
+            self.customActivityIndicatory(self.view, startAnimate: false)
+            //activityIndicatorView.stopAnimating()
         } else {
             print("lost network connection")
         }
+    }
+    
+    func customActivityIndicatory(_ viewContainer: UIView, startAnimate:Bool? = true) -> UIActivityIndicatorView {
+        let mainContainer: UIView = UIView(frame: viewContainer.frame)
+        mainContainer.center = viewContainer.center
+        //mainContainer.backgroundColor = .lightGray
+        //mainContainer.alpha = 0.5
+        mainContainer.tag = 789456123
+        mainContainer.isUserInteractionEnabled = false
+        
+        let viewBackgroundLoading: UIView = UIView(frame: CGRect(x:0,y: 0,width: 80,height: 80))
+        viewBackgroundLoading.center = viewContainer.center
+        viewBackgroundLoading.backgroundColor = .darkGray
+        viewBackgroundLoading.alpha = 0.5
+        viewBackgroundLoading.clipsToBounds = true
+        viewBackgroundLoading.layer.cornerRadius = 15
+        
+        let activityIndicatorView: UIActivityIndicatorView = UIActivityIndicatorView()
+        activityIndicatorView.frame = CGRect(x:0.0,y: 0.0,width: 40.0, height: 40.0)
+        activityIndicatorView.activityIndicatorViewStyle =
+            UIActivityIndicatorViewStyle.whiteLarge
+        activityIndicatorView.center = CGPoint(x: viewBackgroundLoading.frame.size.width / 2, y: viewBackgroundLoading.frame.size.height / 2)
+        if startAnimate! {
+            viewBackgroundLoading.addSubview(activityIndicatorView)
+            mainContainer.addSubview(viewBackgroundLoading)
+            viewContainer.addSubview(mainContainer)
+            activityIndicatorView.startAnimating()
+        } else {
+            for subview in viewContainer.subviews {
+                if subview.tag == 789456123 {
+                    subview.removeFromSuperview()
+                }
+            }
+        }
+        return activityIndicatorView
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        layout.itemSize = CGSize(width: size.width/2 - 0.5, height: size.width/2)
+    }
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -129,11 +203,11 @@ class GalleryCollectionViewController: UICollectionViewController {
         return cell
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        UIApplication.shared.statusBarStyle = .lightContent
-    }
-    
     func setBackgroundDefault() {
+        
+        //remove the spinner becuase nothing's loading
+        //activityIndicatorView.stopAnimating()
+        self.customActivityIndicatory(self.view, startAnimate: false)
         
         //check screen size and determine device.
         let screenSize: CGRect = UIScreen.main.bounds

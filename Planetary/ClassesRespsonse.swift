@@ -16,7 +16,7 @@ struct ClassesResponse {
     init(_ innerHTML: Any?) throws {
         guard let htmlString = innerHTML as? String else { throw HTMLError.badInnerHTML }
         let doc = try SwiftSoup.parse(htmlString)
-        let containers:Array<Element> = try! doc.select("h4").array()
+        let containers:Array<Element> = try! doc.select("h1, h2, h3, h4, h5, h6").array()
         let descriptions:Array<Element> = try! doc.select("p#description").array()
         let videos:Array<Element> = try! doc.select("iframe#vidframe").array()
         

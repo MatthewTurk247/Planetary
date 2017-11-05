@@ -51,7 +51,9 @@ class PSImageViewController: UIViewController {
         PSGalleryImageView.isUserInteractionEnabled = true
         let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.longPressed))
         longPressRecognizer.minimumPressDuration = 0.5
-        PSGalleryImageView.addGestureRecognizer(longPressRecognizer)
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            PSGalleryImageView.addGestureRecognizer(longPressRecognizer)
+        }
         PSGalleryImageView.loadUsingCache(PSImageViewControllerUrl)
         
     }

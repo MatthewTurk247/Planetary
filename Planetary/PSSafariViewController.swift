@@ -9,7 +9,7 @@
 import UIKit
 import SafariServices
 
-class PSSafariViewController: SFSafariViewController {
+class PSSafariViewController: SFSafariViewController, SFSafariViewControllerDelegate {
 
     func buttonAction(sender: UIButton!) {
         print("tapped")
@@ -22,9 +22,7 @@ class PSSafariViewController: SFSafariViewController {
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        //self.view.addSubview(btn)
-        //self.view.bringSubview(toFront: self.view.viewWithTag(1)!)
-        // The back button isn't working right now
+
     }
     
     override func didReceiveMemoryWarning() {
@@ -42,7 +40,7 @@ class PSSafariViewController: SFSafariViewController {
         //it only registers the touch on the button!
         self.dismiss(animated: false)
     }
-
+    
     /*
     // MARK: - Navigation
 

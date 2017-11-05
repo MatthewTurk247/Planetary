@@ -10,6 +10,7 @@ target 'Planetary' do
   pod 'Firebase/Core'
   pod 'Firebase/AdMob'
   pod 'ROGoogleTranslate'
+  pod 'ReadabilityKit'
 
   target 'PlanetaryTests' do
     inherit! :search_paths
