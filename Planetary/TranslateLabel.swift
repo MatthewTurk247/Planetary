@@ -6,7 +6,7 @@
 //  Copyright © 2017 MonitorMOJO. All rights reserved.
 //
 
-import Foundation
+/*import Foundation
 import UIKit
 import ROGoogleTranslate
 
@@ -30,4 +30,4 @@ extension UILabel {
         })
     }
     
-}
+}*/

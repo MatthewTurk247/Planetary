@@ -10,7 +10,7 @@ import UIKit
 import WebKit
 import SwiftSoup
 import Firebase
-import ROGoogleTranslate
+//import ROGoogleTranslate
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, GADNativeExpressAdViewDelegate {
     
